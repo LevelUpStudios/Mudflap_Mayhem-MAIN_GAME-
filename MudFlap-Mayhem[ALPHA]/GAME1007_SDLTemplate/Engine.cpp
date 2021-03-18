@@ -140,28 +140,6 @@ Engine& Engine::Instance()
 
 void Engine::Clean()
 {
-	//for (unsigned i = 0; i < m_pbullet.size(); i++) // Cleanup leftover player bullets(blue laser)
-	//{
-	//	delete m_pbullet[i]; // Flag for re-allocation 'for sale'
-	//	m_pbullet[i] = nullptr; // Wrangle your dangle
-	//}
-	//m_pbullet.clear(); // Clears the vector
-	//m_pbullet.shrink_to_fit(); // Reduces capacity to size
-	//for (unsigned i = 0; i < m_ebullet.size(); i++) // Cleanup levtover enemy bullets(red laser)
-	//{
-	//	delete m_ebullet[i]; // Flag for re-allocation 'for sale'
-	//	m_ebullet[i] = nullptr; // Wrangle your dangle
-	//}
-	//m_ebullet.clear(); // Clears the vector
-	//m_ebullet.shrink_to_fit(); // Reduces capacity to size
-	//for (unsigned i = 0; i < m_enemy.size(); i++) // Cleanup leftover enemies
-	//{
-	//	delete m_enemy[i]; // Flag for re-allocation 'for sale'
-	//	m_enemy[i] = nullptr; // Wrangle your dangle
-	//}
-	//m_enemy.clear(); // Clears the vector
-	//m_enemy.shrink_to_fit(); // Reduces capacity to size
-	//
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
 	//SDL_DestroyTexture(m_pTexture);

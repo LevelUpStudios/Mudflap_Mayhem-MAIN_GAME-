@@ -61,6 +61,7 @@ void GameState::Enter() // Used for initialization
 	m_eLaserTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/red_laser.png");
 	m_pPlayerTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/semi_truck.png");
 	m_pEnemyTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/enemy_ship.png");
+	m_healthBarTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/HealthBarSheet.png");
 
 	m_player.SetRekts({ 0,0,162,130 }, { 431,600,60,100 }); // Player First {} is source rect, second {} destination rect
 
@@ -76,8 +77,7 @@ void GameState::Enter() // Used for initialization
 	m_corner3.SetRekts({ 64,0,16,16 }, { 0,704,64,64 });
 	m_corner4.SetRekts({ 64,0,16,16 }, { 960,704,64,64 });
 
-	m_healthBarTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/HealthBarSheet.png");
-	
+	m_healthFull.SetRekts({ 0,0,300,60 }, { 0,HEIGHT-60,300,60 });
 
 	// Load sounds.
 	m_blueLaser = Mix_LoadWAV("aud/blue_laser_sound.wav");
@@ -139,7 +139,7 @@ void GameState::Update()
 	{
 		for (unsigned i = 0; i < m_enemy.size(); i++)
 		{ // Firing zee enemy lasers
-			if (m_enemy[i]->GetDst()->y >= -100)
+			if (m_enemy[i]->GetDst()->y >0)
 			{
 				m_pEnemyBullet.push_back(new EnemyBullet({ m_enemy[i]->GetDst()->x + 22, m_enemy[i]->GetDst()->y + 35 }));
 				m_enemy.shrink_to_fit();
@@ -292,11 +292,11 @@ void GameState::Render()
 	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner4.GetSrc(), m_corner4.GetDst(), NULL, NULL, SDL_FLIP_VERTICAL);
 
 	//Render Health bar
-	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_healthFull.GetSrc(), m_healthFull.GetSrc());
-	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_health3.GetSrc(), m_health3.GetSrc());
-	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_health4.GetSrc(), m_health4.GetSrc());
-	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_healthDead.GetSrc(), m_healthDead.GetSrc());
-	// Render Player Ship
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_healthFull.GetSrc(), m_healthFull.GetDst());
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_health3.GetSrc(), m_health3.GetDst());
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_health4.GetSrc(), m_health4.GetDst());
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_healthDead.GetSrc(), m_healthDead.GetDst());
+	 //Render Player Ship
 	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_pPlayerTexture, m_player.GetSrc(), m_player.GetDst(),m_player.GetPlayerAngle(),0,SDL_FLIP_NONE);
 	for (unsigned i = 0; i < m_pBullet.size(); i++)
 		SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_pLaserTexture, nullptr, m_pBullet[i]->GetDst(),m_pBullet[i]->GetBulletAngle(),0,SDL_FLIP_NONE);
@@ -332,21 +332,23 @@ void GameState::HealthCheck()
 	cout << m_player.GetPlayerHealth() << endl;
 	if (m_player.GetPlayerHealth() == 3)
 	{
-		SDL_DestroyTexture(m_healthBarTexture);
-		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_health2.GetSrc(), m_health2.GetSrc()); //Set its rects 
+		m_healthFull.SetRekts({ 0,60,300,60 }, { 0,HEIGHT - 60,300,60 });
 	}
 	else if (m_player.GetPlayerHealth() == 2)
 	{
-		SDL_DestroyTexture(m_healthBarTexture);
-		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_health3.GetSrc(), m_health3.GetSrc()); //Set its rects 
+		m_healthFull.SetRekts({ 0,120,300,60 }, { 0,HEIGHT - 60,300,60 });
 	}
 	else if (m_player.GetPlayerHealth() == 1)
 	{
-		SDL_DestroyTexture(m_healthBarTexture);
-		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_health4.GetSrc(), m_health4.GetSrc()); //Set its rects 
+		m_healthFull.SetRekts({ 0,180,300,60 }, { 0,HEIGHT - 60,300,60 });
+
 	}
 	else if (m_player.GetPlayerHealth() == 0)
+	{
+		m_healthFull.SetRekts({ 0,240,300,60 }, { 0,HEIGHT - 60,300,60 });
+
 		STMA::PushState(new LoseState()); // Add new LoseState
+	}
 }
 // End GameState
 
