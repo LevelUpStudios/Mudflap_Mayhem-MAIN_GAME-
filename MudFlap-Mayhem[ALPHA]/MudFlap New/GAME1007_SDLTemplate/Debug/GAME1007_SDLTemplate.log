@@ -1,0 +1,3 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(491,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (GAME1007_M2_Peoples_Sean.vcxproj, GAME1007_M3_Peoples_Sean.vcxproj, GAME1007_M4_Peoples_Sean.vcxproj, GAME1007_SDLTemplate.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Engine.cpp
+  GAME1007_SDLTemplate.vcxproj -> C:\Users\Stupid\Documents\College Stuff\Game production\Mudflap-Mayhem\MudFlap\MudFlap New\Debug\MUDFLAP_MAYHEM_LEVELUP.exe
