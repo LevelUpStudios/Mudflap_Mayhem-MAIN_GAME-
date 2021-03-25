@@ -22,7 +22,6 @@ protected:
 	 
 
 public:
-	int m_playerAngle = 0;
 	void SetRekts(const SDL_Rect s, const SDL_Rect d) // Non-Default constructor
 	{
 		m_src = s;
@@ -30,6 +29,21 @@ public:
 	}
 	SDL_Rect* GetSrc() { return &m_src; }
 	SDL_Rect* GetDst() { return &m_dst; }
+
+};
+
+class Player : public Sprite
+{
+private:
+	int m_playerAngle;
+	int m_playerHealth = 4;
+public:
+	Player()
+	{
+		m_playerAngle = 0;
+	}
+	~Player()
+		= default;
 	void SetPlayerAngle(int a)
 	{
 		m_playerAngle = a;
@@ -38,6 +52,20 @@ public:
 	{
 		return m_playerAngle;
 	}
+	void SetPlayerHealth(int h)
+	{
+		m_playerHealth = h;
+	}
+	int GetPlayerHealth()
+	{
+		return m_playerHealth;
+	}
+};
+
+class Wall : public Sprite
+{
+
+	
 };
 
 class Bullet : public Sprite
@@ -47,7 +75,7 @@ private:
 	int m_bulletAngle;
 public:
 	
-	Bullet(SDL_Point spawnLoc= {486, 560}, int angle = 0) // Non default constructor
+	Bullet(SDL_Point spawnLoc= {486, 560},int angle = 0) // Non default constructor
 	{
 		cout << "Constructing Player Bullet" << endl;
 		this->m_rect.x = spawnLoc.x;
@@ -79,30 +107,10 @@ public:
 			m_rect.y -= 20;
 		if (m_bulletAngle == 90) // Bullets going Right
 			m_rect.x += 20;
-		if (m_bulletAngle == 180) // Bullets
+		if (m_bulletAngle == 180) // Bullets going
 			m_rect.y += 20;
-		if (m_bulletAngle == 270)
+		if (m_bulletAngle == 270) // Bullets going
 			m_rect.x -= 20;
-	}
-	void UpdateUp()
-	{
-		cout << m_bulletAngle << "\n\n\n" << endl;
-		m_rect.y -= 20;
-	}
-	void UpdateDown()
-	{
-		cout << m_bulletAngle << "\n\n\n" << endl;
-		m_rect.y += 20;
-	}
-	void UpdateLeft()
-	{
-		cout << m_bulletAngle << "\n\n\n" << endl;
-		m_rect.x -= 20;
-	}
-	void UpdateRight()
-	{
-		cout << m_bulletAngle << "\n\n\n" << endl;
-		m_rect.x += 20;
 	}
 	SDL_Rect* GetDst() { return &m_rect; }
 	  
@@ -172,43 +180,31 @@ class Engine
 {
 private: // private properties.
 	bool m_running = false;
+	
 	Uint32 m_start, m_end, m_delta, m_fps;
 	const Uint8* m_keystates;
 	SDL_Window* m_pWindow;
 	SDL_Renderer* m_pRenderer;
 
-	SDL_Texture* m_pTexture; //  Player texture
-	SDL_Texture* m_enemyTexture; // Enemy texture
-	SDL_Texture* m_pLaserTexture; // Player laser texture
-	SDL_Texture* m_eLaserTexture; // Enemy laser texture
-	SDL_Texture* m_pBGTexture;  //  Backgrouind texture
-	
-	Sprite m_player, m_bg1, m_bg2;
-	int m_speed = 7; // In-class initialization. Not  the norm.
-	
-	vector<Enemy*> m_enemy;
-	vector<Bullet*> m_pbullet;
-	vector<EnemyBullet*> m_ebullet;
-	
-	// Adding the sound variables
-	Mix_Chunk* m_blueLaser;
-	Mix_Chunk* m_redLaser;
-	Mix_Chunk* m_explode;
-	// Adding background music variables
-	Mix_Music* m_bgMusic;
 
 private: // private method prototypes.
+	Engine(){} //Prevents instantiation outside the class
 	int Init(const char* title, int xPos, int yPos, int width, int height, int flags);
 	void Clean();
 	void Wake();
 	void HandleEvents();
-	bool KeyDown(SDL_Scancode c);
+	// Moved Keydown from here //
 	void Update();
 	void Render();
 	void Sleep();
 
 public: // public method prototypes.
 	int Run();
+	//static Engine* Instance(); // Pointer way.
+	static Engine& Instance(); // Static method for object access.
+	SDL_Renderer* GetRenderer() { return m_pRenderer; }
+	bool KeyDown(SDL_Scancode c);
+	bool m_bCanShoot = false;
 };
 
 #endif

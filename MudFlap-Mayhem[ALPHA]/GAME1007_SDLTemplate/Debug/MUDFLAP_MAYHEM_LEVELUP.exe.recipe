@@ -1,11 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <ProjectOutputs>
-    <ProjectOutput>
-      <FullPath>C:\Users\Stupid\Documents\College Stuff\Game production\Mudflap_Mayhem-MAIN_GAME-\MudFlap-Mayhem[ALPHA]\Debug\MUDFLAP_MAYHEM_LEVELUP.exe</FullPath>
-    </ProjectOutput>
-  </ProjectOutputs>
-  <ContentFiles />
-  <SatelliteDlls />
-  <NonRecipeFileRefs />
+  <ProjectOutputs>F:\School\MudFlap\Mudflap_Mayhem-MAIN_GAME-\MudFlap-Mayhem[ALPHA]\Debug\MUDFLAP_MAYHEM_LEVELUP.exe</ProjectOutputs>
+  <ContentFiles></ContentFiles>
+  <SatelliteDlls></SatelliteDlls>
+  <NonRecipeFileRefs></NonRecipeFileRefs>
 </Project>

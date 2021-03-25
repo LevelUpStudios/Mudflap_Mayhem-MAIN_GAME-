@@ -21,9 +21,21 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StateManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="States.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StateManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="States.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -34,10 +46,16 @@
     <Image Include="img\red_laser.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="img\player_ship.PNG">
+    <Image Include="img\enemy_ship.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="img\enemy_ship.png">
+    <Image Include="img\semi_truck.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\HealthBarSheet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\tileset.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
