@@ -29,8 +29,11 @@ public:
 	Mix_Chunk* m_redLaser;
 	Mix_Chunk* m_explode;
 	// Adding background music variables
-	Mix_Music* m_bgMusic;
-
+	Mix_Music* m_title_Music;
+	Mix_Music* m_shop_Music;
+	Mix_Music* m_level_1_Music;
+	Mix_Music* m_win_Music;
+	Mix_Music* m_lost_Music;
 protected: // Private but inherited
 	State() {} // Prevents instantiation from outside the class
 };
@@ -77,8 +80,6 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Exit();
-
-
 };
 
 class WinState :public State

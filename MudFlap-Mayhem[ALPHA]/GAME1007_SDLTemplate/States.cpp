@@ -21,7 +21,10 @@ void TitleState::Enter()
 	m_pPlayerTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/semi_truck.png");
 	//m_player.SetRekts({ 0,0,162,130 }, { 431,300,162,130 }); // Player First {} is source rect, second {} destination rect
 	
-	
+	m_title_Music = Mix_LoadMUS("aud/Fog.mp3");
+
+	Mix_PlayMusic(m_title_Music, -1);
+	Mix_VolumeMusic(20);
 
 	cout << "Entering TitleState..." << endl;
 }
@@ -34,7 +37,7 @@ void TitleState::Update()
 
 void TitleState::Render()
 {
-	cout << "Rendering TitleState..." << endl;
+//	cout << "Rendering TitleState..." << endl;
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 255, 0, 255, 255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pBGTexture, m_bg1.GetSrc(), m_bg1.GetDst());
@@ -87,12 +90,10 @@ void GameState::Enter() // Used for initialization
 	Mix_VolumeChunk(m_explode,40);
 
 	// Load music.
-	m_bgMusic = Mix_LoadMUS("Aud/moonlight_sonata.mp3");
+	m_level_1_Music = Mix_LoadMUS("aud/Midnight_City.mp3");
 
-	//Play BG music
-	//Mix_PlayMusic(m_bgMusic, -1);
-	//Mix_VolumeMusic(20);
-	
+	Mix_PlayMusic(m_level_1_Music, -1);
+	Mix_VolumeMusic(10);
 }
 
 int frameCount = 0;
@@ -346,7 +347,6 @@ void GameState::HealthCheck()
 	else if (m_player.GetPlayerHealth() == 0)
 	{
 		m_healthFull.SetRekts({ 0,240,300,60 }, { 0,HEIGHT - 60,300,60 });
-
 		STMA::PushState(new LoseState()); // Add new LoseState
 	}
 }
@@ -396,7 +396,10 @@ LoseState::LoseState(){}
 void LoseState::Enter()
 {
 	cout << "Entering LoseState" << endl;
-	Mix_PauseMusic();
+	m_lost_Music = Mix_LoadMUS("aud/Into_Darkness.wav");
+
+	Mix_PlayMusic(m_lost_Music, -1);
+	Mix_VolumeMusic(10);
 }
 
 void LoseState::Update()
@@ -426,7 +429,9 @@ WinState::WinState() {}
 
 void WinState::Enter()
 {
-	
+	m_win_Music = Mix_LoadMUS("aud/Neon.wav");
+	Mix_PlayMusic(m_win_Music, 1);
+	Mix_VolumeMusic(10);
 }
 
 void WinState::Update()
