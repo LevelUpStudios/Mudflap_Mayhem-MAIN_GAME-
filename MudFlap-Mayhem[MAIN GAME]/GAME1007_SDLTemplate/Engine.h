@@ -78,7 +78,7 @@ public:
 	Bullet(SDL_Point spawnLoc= {486, 560},int angle = 0) // Non default constructor
 	{
 		cout << "Constructing Player Bullet" << endl;
-		this->m_rect.x = spawnLoc.x;
+		this->m_rect.x = spawnLoc.x - 50;
 		this->m_rect.y = spawnLoc.y;
 		this->m_rect.w = 73;
 		this->m_rect.h = 126;
