@@ -151,19 +151,25 @@ class Enemy : public Sprite
 {
 private:
 	SDL_Rect m_rect;
+	int m_heading;
 public:
-	Enemy(SDL_Point spawnLoc = {472,100}) // Non default constructor
+	Enemy(SDL_Point spawnLoc = {472,100}, int heading = 0) // Non default constructor
 	{
 		cout << "Spawning Enemy..." << endl;
 		this->m_rect.x = spawnLoc.x;
 		this->m_rect.y = spawnLoc.y;
 		this->m_rect.w = 80;
 		this->m_rect.h = 40;
+		m_heading = heading;
 	}
 	~Enemy() // Destructor
 	{
 		cout << "De-allocating Enemy..." << endl;
 	}
+
+	void SetEnemyHeading(int heading) { m_heading = heading; }
+	int GetEnemyHeading() { return m_heading; }
+
 	void SetLoc(SDL_Point loc)
 	{
 		m_rect.x = loc.x;
@@ -171,7 +177,14 @@ public:
 	}
 	void Update()
 	{
-		this->m_rect.y += 1; // Moves Enemy Ship "down" 1 pixels every frame
+		if (m_heading == 0)
+			m_rect.y += 1;
+		if (m_heading == 90)
+			m_rect.x -= 1;
+		if (m_heading == 180)
+			m_rect.y -= 1;
+		if (m_heading == 270)
+			m_rect.x += 1;
 	}
 	SDL_Rect* GetDst() { return &m_rect; }
 };

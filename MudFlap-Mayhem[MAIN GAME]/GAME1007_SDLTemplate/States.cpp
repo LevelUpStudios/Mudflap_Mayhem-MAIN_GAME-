@@ -66,7 +66,7 @@ void GameState::Enter() // Used for initialization
 	m_pEnemyTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/enemy_ship.png");
 	m_healthBarTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/HealthBarSheet.png");
 
-	m_player.SetRekts({ 0,0,162,130 }, { 431,600,60,100 }); // Player First {} is source rect, second {} destination rect
+	m_player.SetRekts({ 0,0,100,200 }, { 431,600,60,100 }); // Player First {} is source rect, second {} destination rect
 
 	m_bg1.SetRekts({ 0,0,WIDTH,HEIGHT }, { 0,0,WIDTH,HEIGHT });
 
@@ -131,23 +131,30 @@ void GameState::Update()
 	}
 
 	// Spawning Enemies
+	SDL_Point spawnpos[4] = { {0,HEIGHT / 2}, {WIDTH / 2,0}, {WIDTH,HEIGHT / 2},{WIDTH / 2,HEIGHT} };
+	Enemy** entest = new Enemy * [4];
 	if (frameCount % (60 * 2) == 0) // Spawining the hoard
 	{
-		m_enemy.push_back(new Enemy({ rand() % 944,-200 }));
+		entest[0] = { new Enemy(spawnpos[1],0) };
+		entest[1] = { new Enemy(spawnpos[0],270) };
+		entest[2] = { new Enemy(spawnpos[2],90) };
+		entest[3] = { new Enemy(spawnpos[3],180) };
+		m_enemy.push_back(entest[rand() % 4]);
+		//m_enemy.push_back(new Enemy({ rand() % 944,-200 }));
 		m_enemy.shrink_to_fit();
 	}
-	if (frameCount % (60 * 2) == 0)
-	{
-		for (unsigned i = 0; i < m_enemy.size(); i++)
-		{ // Firing zee enemy lasers
-			if (m_enemy[i]->GetDst()->y >0)
-			{
-				m_pEnemyBullet.push_back(new EnemyBullet({ m_enemy[i]->GetDst()->x + 22, m_enemy[i]->GetDst()->y + 35 }));
-				m_enemy.shrink_to_fit();
-				//Mix_PlayChannel(-1, m_redLaser, 0);
-			}
-		}
-	}
+	//if (frameCount % (60 * 2) == 0)
+	//{
+	//	for (unsigned i = 0; i < m_enemy.size(); i++)
+	//	{ // Firing zee enemy lasers
+	//		if (m_enemy[i]->GetDst()->y >0)
+	//		{
+	//			m_pEnemyBullet.push_back(new EnemyBullet({ m_enemy[i]->GetDst()->x + 22, m_enemy[i]->GetDst()->y + 35 }));
+	//			m_enemy.shrink_to_fit();
+	//			//Mix_PlayChannel(-1, m_redLaser, 0);
+	//		}
+	//	}
+	//}
 	++frameCount;
 
 	for (unsigned i = 0; i < m_enemy.size(); i++) // Update the hoard ships
@@ -305,7 +312,7 @@ void GameState::Render()
 
 	// Render an enemy ship
 	for (unsigned i = 0; i < m_enemy.size(); i++)
-		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pEnemyTexture, nullptr, m_enemy[i]->GetDst());
+		SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_pEnemyTexture, nullptr, m_enemy[i]->GetDst(), m_enemy[i]->GetEnemyHeading(),0,SDL_FLIP_NONE);
 	// Render an enemy laser
 	for (unsigned i = 0; i < m_pEnemyBullet.size(); i++)
 		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_eLaserTexture, nullptr, m_pEnemyBullet[i]->GetDst());
