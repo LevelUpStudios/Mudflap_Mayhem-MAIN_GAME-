@@ -15,8 +15,8 @@ public:
 	virtual void Resume();
 	virtual ~State() = default; // Modern alternative to {}
 
-	SDL_Texture* m_pBGTexture, * m_pPlayerTexture, * m_pEnemyTexture, *m_pLaserTexture, *m_eLaserTexture, * m_wallTexture,*m_healthBarTexture;
-	Sprite m_bg1, m_wall1, m_wall2, m_wall3, m_wall4, m_corner1, m_corner2, m_corner3, m_corner4,m_healthFull,m_health2,m_health3,m_health4,m_healthDead;
+	SDL_Texture* m_pBGTexture, * m_pPlayerTexture, * m_pEnemyTexture, *m_pLaserTexture, *m_eLaserTexture, * m_wallTexture,*m_healthBarTexture, *m_pWinTexture;
+	Sprite m_bg1, m_wall1, m_wall2, m_wall3, m_wall4, m_corner1, m_corner2, m_corner3, m_corner4,m_healthFull,m_health2,m_health3,m_health4, m_healthDead, m_fireworks;
 	Player m_player;
 	int m_speed = 7;
 

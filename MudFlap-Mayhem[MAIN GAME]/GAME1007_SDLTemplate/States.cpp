@@ -97,6 +97,7 @@ void GameState::Enter() // Used for initialization
 }
 
 int frameCount = 0;
+int killCount = 0;
 void GameState::Update()
 {
 	
@@ -145,7 +146,7 @@ void GameState::Update()
 	}
 	int randomEIndex = rand() % m_enemy.size();
 	if (frameCount % (60 * 2) == 0)
-		m_pEnemyBullet.push_back(new EnemyBullet({ m_enemy[randomEIndex]->GetDst()->x + 22, m_enemy[randomEIndex]->GetDst()->y + 35 }, m_enemy[randomEIndex]->GetEnemyHeading()));
+		m_pEnemyBullet.push_back(new EnemyBullet({ m_enemy[randomEIndex]->GetDst()->x, m_enemy[randomEIndex]->GetDst()->y }, m_enemy[randomEIndex]->GetEnemyHeading()));
 		m_enemy.shrink_to_fit();
 	
 	//{
@@ -177,6 +178,7 @@ void GameState::Update()
 			{
 				cout << "Collision" << endl;
 				//Mix_PlayChannel(-1, m_explode, 0);
+				killCount++;
 				// Destroys enemy upon collision
 				delete m_enemy[i]; // Flag for re-allocation 'for sale'
 				m_enemy[i] = nullptr; // Wrangle your dangle
@@ -278,13 +280,17 @@ void GameState::Update()
 			break;
 		}
 	}
+	// Using State Manager to Trigger different States
+	
+	if (killCount == 2)
+		STMA::ChangeState(new WinState());
 
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_X))
 		STMA::ChangeState(new TitleState()); // Change to new TitleState
 	else if(Engine::Instance().KeyDown(SDL_SCANCODE_P))
 		STMA::PushState(new PauseState()); // Add new PauseState
-	if (Engine::Instance().KeyDown(SDL_SCANCODE_M))
-		STMA::ChangeState(new WinState()); // Change to new WinState (Using to force win state for now)
+	//if (Engine::Instance().KeyDown(SDL_SCANCODE_M))
+	//	STMA::ChangeState(new WinState()); // Change to new WinState (Using to force win state for now)
 }
 
 void GameState::Render()
@@ -440,6 +446,8 @@ WinState::WinState() {}
 
 void WinState::Enter()
 {
+	m_pWinTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/Fireworks.png ");
+	m_fireworks.SetRekts({0,0,800,600}, {0,0,WIDTH,HEIGHT});
 	m_win_Music = Mix_LoadMUS("aud/Neon.wav");
 	Mix_PlayMusic(m_win_Music, 1);
 	Mix_VolumeMusic(10);
@@ -456,6 +464,7 @@ void WinState::Render()
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 0, 255);
 	SDL_Rect rect = { 0,0,1024,768 };
 	SDL_RenderFillRect(Engine::Instance().GetRenderer(), &rect);
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pWinTexture, m_fireworks.GetSrc(), m_fireworks.GetDst());
 	State::Render();
 }
 

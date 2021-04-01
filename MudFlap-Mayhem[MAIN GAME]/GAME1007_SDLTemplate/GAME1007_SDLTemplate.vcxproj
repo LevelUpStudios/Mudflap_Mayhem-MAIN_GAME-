@@ -154,6 +154,7 @@
   <ItemGroup>
     <Image Include="img\blue_laser.png" />
     <Image Include="img\enemy_ship.png" />
+    <Image Include="img\Fireworks.png" />
     <Image Include="img\HealthBarSheet.png" />
     <Image Include="img\red_laser.png" />
     <Image Include="img\semi_truck.png" />

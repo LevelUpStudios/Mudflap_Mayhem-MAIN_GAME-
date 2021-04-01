@@ -146,13 +146,13 @@ public:
 	void Update()
 	{
 		if (m_heading == 0)
-			m_rect.y += 8;
+			m_rect.y += 3;
 		if (m_heading == 90)
-			m_rect.x -= 8;
+			m_rect.x -= 3;
 		if (m_heading == 180)
-			m_rect.y -= 8;
+			m_rect.y -= 3;
 		if (m_heading == 270)
-			m_rect.x += 8;
+			m_rect.x += 3;
 		//this->m_rect.y += 8; // Moves bullet "down" 10 pixels every frame
 	}
 	SDL_Rect* GetDst() { return &m_rect; }
