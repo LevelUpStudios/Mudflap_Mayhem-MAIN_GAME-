@@ -143,15 +143,19 @@ void GameState::Update()
 		//m_enemy.push_back(new Enemy({ rand() % 944,-200 }));
 		m_enemy.shrink_to_fit();
 	}
-	//if (frameCount % (60 * 2) == 0)
+	int randomEIndex = rand() % m_enemy.size();
+	if (frameCount % (60 * 2) == 0)
+		m_pEnemyBullet.push_back(new EnemyBullet({ m_enemy[randomEIndex]->GetDst()->x + 22, m_enemy[randomEIndex]->GetDst()->y + 35 }, m_enemy[randomEIndex]->GetEnemyHeading()));
+		m_enemy.shrink_to_fit();
+	
 	//{
 	//	for (unsigned i = 0; i < m_enemy.size(); i++)
 	//	{ // Firing zee enemy lasers
 	//		if (m_enemy[i]->GetDst()->y >0)
 	//		{
-	//			m_pEnemyBullet.push_back(new EnemyBullet({ m_enemy[i]->GetDst()->x + 22, m_enemy[i]->GetDst()->y + 35 }));
+	//			m_pEnemyBullet.push_back(new EnemyBullet({ m_enemy[i]->GetDst()->x + 22, m_enemy[i]->GetDst()->y + 35 },m_enemy[i]->GetEnemyHeading()));
 	//			m_enemy.shrink_to_fit();
-	//			//Mix_PlayChannel(-1, m_redLaser, 0);
+	//			Mix_PlayChannel(-1, m_redLaser, 0);
 	//		}
 	//	}
 	//}
@@ -161,7 +165,7 @@ void GameState::Update()
 		m_enemy[i]->Update();
 	for (unsigned i = 0; i < m_pBullet.size(); i++) // Update the player lasers(blue)
 		m_pBullet[i]->Update();
-	for (unsigned i = 0; i < m_pEnemyBullet.size(); i++) // Update the player lasers(blue)
+	for (unsigned i = 0; i < m_pEnemyBullet.size(); i++) // Update the enemy lasers(red)
 		m_pEnemyBullet[i]->Update();
 	
 	// Check for colision between player laser and enemy ships
@@ -315,7 +319,7 @@ void GameState::Render()
 		SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_pEnemyTexture, nullptr, m_enemy[i]->GetDst(), m_enemy[i]->GetEnemyHeading(),0,SDL_FLIP_NONE);
 	// Render an enemy laser
 	for (unsigned i = 0; i < m_pEnemyBullet.size(); i++)
-		SDL_RenderCopy(Engine::Instance().GetRenderer(), m_eLaserTexture, nullptr, m_pEnemyBullet[i]->GetDst());
+		SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_eLaserTexture, nullptr, m_pEnemyBullet[i]->GetDst(),m_pEnemyBullet[i]->GetEbulletHeading(),0,SDL_FLIP_NONE);
 
 
 	if (dynamic_cast<GameState*>(STMA::GetStates().back()) ) // Check to see if current state is of type GameState

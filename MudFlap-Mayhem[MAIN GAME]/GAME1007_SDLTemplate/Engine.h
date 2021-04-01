@@ -120,15 +120,16 @@ class EnemyBullet : public Sprite
 {
 private:
 	SDL_Rect m_rect;
-
+	int m_heading;
 public:
-	EnemyBullet(SDL_Point spawnLoc = { 486, 560 }) // Non default constructor
+	EnemyBullet(SDL_Point spawnLoc = { 486, 560 }, int heading = 0) // Non default constructor
 	{
 		cout << "Constructing Enemy Bullet" << endl;
 		this->m_rect.x = spawnLoc.x;
 		this->m_rect.y = spawnLoc.y;
 		this->m_rect.w = 36;
 		this->m_rect.h = 64;
+		m_heading = heading;
 	}
 	~EnemyBullet() // Destructor
 	{
@@ -139,10 +140,20 @@ public:
 		m_rect.x = loc.x;
 		m_rect.y = loc.y;
 	}
+	void SetEbulletHeading(int heading) { m_heading = heading; }
+	int GetEbulletHeading() { return m_heading; }
 
 	void Update()
 	{
-		this->m_rect.y += 8; // Moves bullet "down" 10 pixels every frame
+		if (m_heading == 0)
+			m_rect.y += 8;
+		if (m_heading == 90)
+			m_rect.x -= 8;
+		if (m_heading == 180)
+			m_rect.y -= 8;
+		if (m_heading == 270)
+			m_rect.x += 8;
+		//this->m_rect.y += 8; // Moves bullet "down" 10 pixels every frame
 	}
 	SDL_Rect* GetDst() { return &m_rect; }
 };
