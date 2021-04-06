@@ -71,14 +71,29 @@ void GameState::Enter() // Used for initialization
 	m_bg1.SetRekts({ 0,0,WIDTH,HEIGHT }, { 0,0,WIDTH,HEIGHT });
 
 	m_wallTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/tileset.png");
+
 	m_wall1.SetRekts({ 80,0,16,16 }, { 64,0,896,64 });
 	m_wall2.SetRekts({ 80,0,16,16 }, { 64,704,896,64 });
 	m_wall3.SetRekts({ 96,0,16,16 }, { 0,64,64,HEIGHT - 64 });
 	m_wall4.SetRekts({ 96,0,16,16 }, { WIDTH - 64, 64 ,64,HEIGHT - 64 });
+
 	m_corner1.SetRekts({ 64,0,16,16 }, { 0,0,64,64 });
 	m_corner2.SetRekts({ 64,0,16,16 }, { 960,0,64,64 });
 	m_corner3.SetRekts({ 64,0,16,16 }, { 0,704,64,64 });
 	m_corner4.SetRekts({ 64,0,16,16 }, { 960,704,64,64 });
+
+	// Upper and lower doors
+	m_door1.SetRekts({ 64,0,16,16 }, { 384,0,64,64 });
+	m_door2.SetRekts({ 64,0,16,16 }, { 512,0,64,64 });
+	m_door3.SetRekts({ 64,0,16,16 }, { 384,704,64,64 });
+	m_door4.SetRekts({ 64,0,16,16 }, { 512,704,64,64 });
+
+	// Left and right doors
+	m_door5.SetRekts({ 64,0,16,16 }, { 0,256,64,64 });
+	m_door6.SetRekts({ 64,0,16,16 }, { 0,384,64,64 });
+	m_door7.SetRekts({ 64,0,16,16 }, { 960,256,64,64 });
+	m_door8.SetRekts({ 64,0,16,16 }, { 960,384,64,64 });
+
 
 	m_healthFull.SetRekts({ 0,0,300,60 }, { 0,HEIGHT-60,300,60 });
 
@@ -98,9 +113,10 @@ void GameState::Enter() // Used for initialization
 
 int frameCount = 0;
 int killCount = 0;
+
 void GameState::Update()
 {
-	
+
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_W) && m_player.GetDst()->y > 0)
 	{
 		m_player.GetDst()->y -= m_speed;
@@ -121,18 +137,18 @@ void GameState::Update()
 		m_player.SetPlayerAngle(90);
 		m_player.GetDst()->x += m_speed;
 	}
-	
-	if (Engine:: Instance().KeyDown(SDL_SCANCODE_SPACE) && Engine::Instance().m_bCanShoot)
+
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_SPACE) && Engine::Instance().m_bCanShoot)
 	{
 		//Spawn a new player bullet
 		Engine::Instance().m_bCanShoot = false;
-		m_pBullet.push_back (new Bullet({ m_player.GetDst()->x +44, m_player.GetDst()->y-20},m_player.GetPlayerAngle()));
+		m_pBullet.push_back(new Bullet({ m_player.GetDst()->x + 44, m_player.GetDst()->y - 20 }, m_player.GetPlayerAngle()));
 		m_pBullet.shrink_to_fit();
 		//Mix_PlayChannel(-1, m_blueLaser, 0);
 	}
 
 	// Spawning Enemies
-	SDL_Point spawnpos[4] = { {0,HEIGHT / 2}, {WIDTH / 2,0}, {WIDTH,HEIGHT / 2},{WIDTH / 2,HEIGHT} };
+	SDL_Point spawnpos[4] = { {0,332}, {440,0}, {WIDTH,332},{440,HEIGHT} };
 	Enemy** entest = new Enemy * [4];
 	if (frameCount % (60 * 2) == 0) // Spawining the hoard
 	{
@@ -140,14 +156,17 @@ void GameState::Update()
 		entest[1] = { new Enemy(spawnpos[0],270) };
 		entest[2] = { new Enemy(spawnpos[2],90) };
 		entest[3] = { new Enemy(spawnpos[3],180) };
-		m_enemy.push_back(entest[rand() % 4]);
+		m_enemy.push_back(entest[rand()%4]);
 		//m_enemy.push_back(new Enemy({ rand() % 944,-200 }));
 		m_enemy.shrink_to_fit();
 	}
-	int randomEIndex = rand() % m_enemy.size();
-	if (frameCount % (60 * 2) == 0)
+	
+	if (frameCount % (60 * 2) == 0) 
+	{
+		int randomEIndex = rand() % m_enemy.size();
 		m_pEnemyBullet.push_back(new EnemyBullet({ m_enemy[randomEIndex]->GetDst()->x, m_enemy[randomEIndex]->GetDst()->y }, m_enemy[randomEIndex]->GetEnemyHeading()));
 		m_enemy.shrink_to_fit();
+	}
 	
 	//{
 	//	for (unsigned i = 0; i < m_enemy.size(); i++)
@@ -308,6 +327,20 @@ void GameState::Render()
 	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner2.GetSrc(), m_corner2.GetDst(), NULL, NULL, SDL_FLIP_NONE);
 	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner3.GetSrc(), m_corner3.GetDst(), 180, NULL, SDL_FLIP_NONE);
 	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner4.GetSrc(), m_corner4.GetDst(), NULL, NULL, SDL_FLIP_VERTICAL);
+
+	// Upper Door
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner1.GetSrc(), m_door1.GetDst(), NULL, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner1.GetSrc(), m_door2.GetDst(), NULL, NULL, SDL_FLIP_HORIZONTAL);
+	// Lower Door
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner1.GetSrc(), m_door3.GetDst(), NULL, NULL, SDL_FLIP_VERTICAL);
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner3.GetSrc(), m_door4.GetDst(), 180, NULL, SDL_FLIP_NONE);
+
+	// Left Door
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner1.GetSrc(), m_door5.GetDst(), 180, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner1.GetSrc(), m_door6.GetDst(), NULL, NULL, SDL_FLIP_HORIZONTAL);
+	// Right Door
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner1.GetSrc(), m_door7.GetDst(), 90, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), m_wallTexture, m_corner1.GetSrc(), m_door8.GetDst(), NULL, NULL, SDL_FLIP_NONE);
 
 	//Render Health bar
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_healthBarTexture, m_healthFull.GetSrc(), m_healthFull.GetDst());
