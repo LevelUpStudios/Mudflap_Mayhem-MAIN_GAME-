@@ -61,5 +61,11 @@
     <Image Include="img\Fireworks.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="img\mudflap_title.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\PauseScreen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

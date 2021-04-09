@@ -156,6 +156,8 @@
     <Image Include="img\enemy_ship.png" />
     <Image Include="img\Fireworks.png" />
     <Image Include="img\HealthBarSheet.png" />
+    <Image Include="img\mudflap_title.png" />
+    <Image Include="img\PauseScreen.png" />
     <Image Include="img\red_laser.png" />
     <Image Include="img\semi_truck.png" />
     <Image Include="img\tileset.png" />

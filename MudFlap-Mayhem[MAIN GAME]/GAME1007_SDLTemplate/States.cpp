@@ -407,6 +407,9 @@ PauseState::PauseState(){}
 
 void PauseState::Enter()
 {
+	m_pPauseTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/PauseScreen.png ");
+	m_paused.SetRekts({ 0,0,500,250 }, { 273,250,500,250 });
+	
 	// Create buttons in here
 	cout << "Entering PauseState..." << endl;
 	Mix_PauseMusic();
@@ -431,6 +434,8 @@ void PauseState::Render()
 	SDL_Rect rect = { 256,128,512,512 };
 	SDL_RenderFillRect(Engine::Instance().GetRenderer(), &rect);
 
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pPauseTexture, m_paused.GetSrc(), m_paused.GetDst());
+
 	State::Render();
 }
 
@@ -445,6 +450,9 @@ LoseState::LoseState(){}
 
 void LoseState::Enter()
 {
+	m_pLoseTexture = IMG_LoadTexture(Engine::Instance().GetRenderer(), "img/LoseScreen.png ");
+	m_lose.SetRekts({ 0,0,500,250 }, { 273,250,500,250 });
+	
 	cout << "Entering LoseState" << endl;
 	m_lost_Music = Mix_LoadMUS("aud/Into_Darkness.wav");
 
@@ -467,6 +475,7 @@ void LoseState::Render()
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 100, 0, 0, 128);
 	SDL_Rect rect = { 256,128,512,512 };
 	SDL_RenderFillRect(Engine::Instance().GetRenderer(), &rect);
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), m_pLoseTexture, m_lose.GetSrc(), m_lose.GetDst());
 	State::Render();
 }
 
