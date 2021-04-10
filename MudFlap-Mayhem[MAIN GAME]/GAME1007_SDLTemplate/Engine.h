@@ -37,6 +37,7 @@ class Player : public Sprite
 private:
 	int m_playerAngle;
 	int m_playerHealth = 4;
+	int m_playerSpeed = 7;
 public:
 	Player()
 	{
@@ -59,6 +60,14 @@ public:
 	int GetPlayerHealth()
 	{
 		return m_playerHealth;
+	}
+	void SetPlayerSpeed(int s)
+	{
+		m_playerSpeed = s;
+	}
+	int GetPlayerSpeed()
+	{
+		return m_playerSpeed;
 	}
 };
 

@@ -119,23 +119,23 @@ void GameState::Update()
 
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_W) && m_player.GetDst()->y > 0)
 	{
-		m_player.GetDst()->y -= m_speed;
+		m_player.GetDst()->y -= m_player.GetPlayerSpeed();
 		m_player.SetPlayerAngle(0);
 	}
 	else if (Engine::Instance().KeyDown(SDL_SCANCODE_S) && m_player.GetDst()->y < HEIGHT - m_player.GetDst()->h)
 	{
-		m_player.GetDst()->y += m_speed;
+		m_player.GetDst()->y += m_player.GetPlayerSpeed();
 		m_player.SetPlayerAngle(180);
 	}
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_A) && m_player.GetDst()->x > 0)
 	{
-		m_player.GetDst()->x -= m_speed;
+		m_player.GetDst()->x -= m_player.GetPlayerSpeed();
 		m_player.SetPlayerAngle(270);
 	}
 	else if (Engine::Instance().KeyDown(SDL_SCANCODE_D) && m_player.GetDst()->x < WIDTH - m_player.GetDst()->w)
 	{
 		m_player.SetPlayerAngle(90);
-		m_player.GetDst()->x += m_speed;
+		m_player.GetDst()->x += m_player.GetPlayerSpeed();
 	}
 
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_SPACE) && Engine::Instance().m_bCanShoot)
@@ -197,7 +197,8 @@ void GameState::Update()
 			{
 				cout << "Collision" << endl;
 				//Mix_PlayChannel(-1, m_explode, 0);
-				killCount++;
+				killCount++;//move to player class to make game replayable 
+
 				// Destroys enemy upon collision
 				delete m_enemy[i]; // Flag for re-allocation 'for sale'
 				m_enemy[i] = nullptr; // Wrangle your dangle
@@ -301,8 +302,8 @@ void GameState::Update()
 	}
 	// Using State Manager to Trigger different States
 	
-	if (killCount == 2)
-		STMA::ChangeState(new WinState());
+	if (killCount == 10)
+		STMA::ChangeState(new ShopState());
 
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_X))
 		STMA::ChangeState(new TitleState()); // Change to new TitleState
@@ -511,5 +512,53 @@ void WinState::Render()
 }
 
 void WinState::Exit()
+{
+}
+
+
+ShopState::ShopState() {}
+
+void ShopState::Enter()
+{
+	m_shop = Mix_LoadMUS("aud/Shop.mp3");
+	Mix_FadeInMusic(m_shop, 1,1000);
+	Mix_VolumeMusic(10);
+}
+
+void ShopState::Update()
+{
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_R))
+		STMA::PopState();
+
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_1)) //Gaining health back
+	{
+		if (m_player.GetPlayerHealth() < 4)
+		{
+			m_player.SetPlayerHealth(m_player.GetPlayerHealth() + 1);
+			//GameState::HealthCheck();
+		}
+		else
+		{
+			//make player take another option
+		}
+	}
+
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_2))//increase speed
+	{
+		m_player.SetPlayerSpeed(m_player.GetPlayerSpeed() + 2);
+	}
+
+	//set state for level 2
+}
+
+void ShopState::Render()
+{
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 100, 0, 100, 128);
+	SDL_Rect rect = { 0,0,WIDTH,HEIGHT };
+	SDL_RenderFillRect(Engine::Instance().GetRenderer(), &rect);
+	State::Render();
+}
+
+void ShopState::Exit()
 {
 }
