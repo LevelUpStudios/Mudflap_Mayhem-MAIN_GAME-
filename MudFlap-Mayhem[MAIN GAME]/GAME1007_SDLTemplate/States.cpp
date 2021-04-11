@@ -302,9 +302,11 @@ void GameState::Update()
 	}
 	// Using State Manager to Trigger different States
 	
-	if (killCount == 10)
+	if (killCount == 10) {
+		
 		STMA::ChangeState(new WinState());
-
+		killCount = 0;
+	}
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_X))
 		STMA::ChangeState(new TitleState()); // Change to new TitleState
 	else if(Engine::Instance().KeyDown(SDL_SCANCODE_P))
